@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <button type="button" class="btn btn-outline btn-primary pull-right">
-                        <i class="fa fa-edit fa-fw"></i> 공지사항 작성
+                        <i class="fa fa-edit fa-fw"></i> 글 작성
                     </button>
                 </div>
             </div>
@@ -42,7 +42,12 @@
                         <c:forEach items="${selectList}" var="selectList">
                             <tr>
                                 <td>${selectList.bno}</td>
-                                <td>${selectList.title}</td>
+                                <td>
+                                    <a href="/board/detail?bno=${selectList.bno}">
+                                            ${selectList.title}
+                                    </a>
+
+                                </td>
                                 <td>${selectList.writer}</td>
                                 <td>${selectList.cdate}</td>
                                 <td>${selectList.viewCnt}</td>
