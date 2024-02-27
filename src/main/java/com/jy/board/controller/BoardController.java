@@ -5,10 +5,7 @@ import com.jy.board.repo.BoardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,5 +43,16 @@ public class BoardController {
         model.addAttribute("boardDto",boardDto);
         return "redirect:/board/list";
     }
+
+    @GetMapping("/write")
+    public String writeForm(){
+        return "/board/writeForm";
+    }
+    @PostMapping("/write")
+    public String writeForm(@ModelAttribute BoardDto boardDto){
+        boardRepo.writeBoard(boardDto);
+        return "redirect:/board/list";
+    }
+
 
 }

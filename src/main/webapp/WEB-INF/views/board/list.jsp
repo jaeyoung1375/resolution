@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <button type="button" class="btn btn-outline btn-primary pull-right">
+                    <button type="button" class="btn btn-outline btn-primary pull-right" onclick="location.href='write'" >
                         <i class="fa fa-edit fa-fw"></i> 글 작성
                     </button>
                 </div>

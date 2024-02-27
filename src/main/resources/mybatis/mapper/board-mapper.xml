@@ -18,4 +18,10 @@
     <delete id="deleteById">
         delete from board where bno = #{bno}
     </delete>
+
+<!--    게시물 작성 -->
+    <insert id ="writeBoard">
+        insert into board(bno, title, content, writer)
+        values(board_seq.nextval, #{title}, #{content}, #{writer})
+    </insert>
 </mapper>

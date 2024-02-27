@@ -28,4 +28,9 @@ public class BoardRepoImpl implements BoardRepo {
     public int deleteById(int bno) {
         return sqlSession.delete("board.deleteById",bno);
     }
+
+    @Override
+    public void writeBoard(BoardDto boardDto) {
+        sqlSession.insert("board.writeBoard",boardDto);
+    }
 }

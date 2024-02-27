@@ -13,4 +13,6 @@ public interface BoardRepo {
     public BoardDto selectOne(int bno);
     // 게시물 단일 삭제
     public int deleteById(int bno);
+    // 게시물 등록
+    public void writeBoard(BoardDto boardDto);
 }
