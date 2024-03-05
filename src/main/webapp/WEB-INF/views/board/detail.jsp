@@ -26,9 +26,8 @@
                     <table class="table table-hover">
                         <tr>
                             <td>${boardDto.title}
-                                ip : ${userIp}
                             </td>
-                        </tr>
+                        </tr>ㅣ
                         <tr>
                             <td>${boardDto.writer}</td>
                             <td>조회수 | ${boardDto.viewCnt}</td>
