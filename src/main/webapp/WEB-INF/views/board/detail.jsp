@@ -25,7 +25,9 @@
                 <div class="panel-body">
                     <table class="table table-hover">
                         <tr>
-                            <td>${boardDto.title}</td>
+                            <td>${boardDto.title}
+                                ip : ${userIp}
+                            </td>
                         </tr>
                         <tr>
                             <td>${boardDto.writer}</td>

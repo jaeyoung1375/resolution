@@ -15,4 +15,6 @@ public interface BoardRepo {
     public int deleteById(int bno);
     // 게시물 등록
     public void writeBoard(BoardDto boardDto);
+    // 조회수 증가
+    public void updateViewCnt(int bno);
 }

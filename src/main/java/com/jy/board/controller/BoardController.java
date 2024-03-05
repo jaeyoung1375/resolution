@@ -2,11 +2,13 @@ package com.jy.board.controller;
 
 import com.jy.board.dto.BoardDto;
 import com.jy.board.repo.BoardRepo;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 
 @Controller
@@ -30,8 +32,11 @@ public class BoardController {
     }
 
     @GetMapping("/detail")
-    public String selectOne(@RequestParam int bno, Model model){
+    public String selectOne(@RequestParam int bno, Model model, HttpServletRequest request){
         BoardDto boardDto = boardRepo.selectOne(bno);
+        boardRepo.updateViewCnt(bno);
+        String userIp = request.getRemoteAddr();
+        model.addAttribute("userIp",userIp);
        model.addAttribute("boardDto",boardDto);
        return "board/detail";
     }

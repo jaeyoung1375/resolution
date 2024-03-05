@@ -33,4 +33,9 @@ public class BoardRepoImpl implements BoardRepo {
     public void writeBoard(BoardDto boardDto) {
         sqlSession.insert("board.writeBoard",boardDto);
     }
+
+    @Override
+    public void updateViewCnt(int bno) {
+         sqlSession.update("board.updateViewCnt",bno);
+    }
 }
