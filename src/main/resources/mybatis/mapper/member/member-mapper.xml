@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+    <!-- 회원가입 -->
+    <insert id = "join">
+        insert into member(id, password, name, mobile)
+        values(
+               #{id},
+               #{password},
+               #{name},
+               #{mobile}
+              )
+    </insert>
+
+    <!-- 로그인 시 IP 업데이트  -->
+    <update id = "updateLoginIp">
+        update member set lastLoginIp = #{lastLoginIp}
+    </update>
+
+    <!-- 로그인 시 로그인 일자 업데이트 -->
+    <update id = "updateLoginDate">
+        update member set lastLoginDate = sysdate
+    </update>
+
+    <select id = "findById" resultType="MemberDto">
+        select * from member where id = #{id}
+    </select>
+
+
+</mapper>
