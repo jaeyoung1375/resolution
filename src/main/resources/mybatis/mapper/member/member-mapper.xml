@@ -6,23 +6,22 @@
 <mapper namespace="member">
     <!-- 회원가입 -->
     <insert id = "join">
-        insert into member(id, password, name, mobile)
+        insert into member(id, password, name)
         values(
                #{id},
                #{password},
-               #{name},
-               #{mobile}
+               #{name}
               )
     </insert>
 
     <!-- 로그인 시 IP 업데이트  -->
     <update id = "updateLoginIp">
-        update member set lastLoginIp = #{lastLoginIp}
+        update member set lastLoginIp = #{lastLoginIp} where id = #{id}
     </update>
 
     <!-- 로그인 시 로그인 일자 업데이트 -->
     <update id = "updateLoginDate">
-        update member set lastLoginDate = sysdate
+        update member set lastLoginDate = sysdate where id = #{id}
     </update>
 
     <select id = "findById" resultType="MemberDto">

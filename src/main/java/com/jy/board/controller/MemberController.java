@@ -32,6 +32,12 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@ModelAttribute MemberDto memberDto){
 
+        // 비밀번호 암호화
+        String EncryptPassword = passwordUtils.SHA256Encrypt(memberDto.getPassword());
+        memberDto.setPassword(EncryptPassword);
+
+        memberRepo.join(memberDto);
+
         return "redirect:/board/list";
     }
 
@@ -45,24 +51,26 @@ public class MemberController {
     public String login(@ModelAttribute MemberDto memberDto, HttpServletRequest request, HttpSession session) {
 
         MemberDto originalMember = memberRepo.findById(memberDto.getId());
+        log.info("실제 사용자 : " + originalMember);
+
 
         String ip = request.getRemoteAddr();
         memberDto.setLastLoginIp(ip);
 
         // 로그인 아이피 업데이트
-        memberRepo.updateLastLoginIp(memberDto.getLastLoginIp());
+        memberRepo.updateLastLoginIp(memberDto.getLastLoginIp(),memberDto.getId());
         // 로그인 일자 업데이트
-        memberRepo.updateLastLoginDate();
+        memberRepo.updateLastLoginDate(memberDto.getId());
 
-
+        log.info("로그인한 사용자 : " + memberDto);
         // 비밀번호 유효성 검증
         String encryptPassword = passwordUtils.SHA256Encrypt(memberDto.getPassword());
-        if(originalMember.getPassword().equals(encryptPassword)){
-
+        if(originalMember.getPassword().equals(encryptPassword) && originalMember.getId().equals(memberDto.getId())){
+            
+            // 로그인 성공
+            session.setAttribute("memberDto",memberDto);
         }
-
-        // 로그인 성공
-        session.setAttribute("memberDto",memberDto);
+            log.info("로그인 세션 정보 : "+session.getAttribute("memberDto"));
 
         return "redirect:/board/list";
     }
