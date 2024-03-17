@@ -6,9 +6,29 @@
 <mapper namespace="board">
 
 <!--    전체 게시물 조회-->
+<!--    <select id="selectList" resultType="boardDto">-->
+<!--        select * from board order by bno desc-->
+<!--    </select>-->
+
     <select id="selectList" resultType="boardDto">
-        select * from board order by bno desc
+        <![CDATA[
+        SELECT bno, title, content, writer, cdate, view_cnt
+        FROM (
+                 SELECT rownum AS rn, bno, title, content, writer, cdate, view_cnt
+                 FROM (
+                          SELECT bno, title, content, writer, cdate, view_cnt
+                          FROM board
+                          ORDER BY bno desc
+                      )
+                 WHERE rownum <= #{page} * #{pageSize}
+            )
+        WHERE rn > (#{page} - 1) * #{pageSize}
+        ]]>
+
     </select>
+
+
+
 
 <!--    게시물 상세 조회-->
     <select id="selectOne" resultType="boardDto">
@@ -29,4 +49,9 @@
     <update id="updateViewCnt">
         update board set view_cnt = view_cnt + 1 where bno = #{bno}
     </update>
+
+    <!-- 게시물 개수 조회 -->
+    <select id ="getTotal" resultType="int">
+        SELECT COUNT(*) FROM board
+    </select>
 </mapper>

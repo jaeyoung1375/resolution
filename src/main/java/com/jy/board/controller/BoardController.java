@@ -2,6 +2,7 @@ package com.jy.board.controller;
 
 import com.jy.board.dto.BoardDto;
 import com.jy.board.repo.BoardRepo;
+import com.jy.board.vo.PaginationVO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/board")
@@ -24,9 +27,18 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public String selectList(Model model){
-        List<BoardDto> selectList  = boardRepo.selectList();
+    public String selectList(Model model, @RequestParam(defaultValue = "1") Integer page,
+                             @RequestParam(defaultValue = "10") Integer pageSize){
+        Map map = new HashMap();
+        map.put("page",page);
+        map.put("pageSize", pageSize);
+
+        int totalCnt = boardRepo.getTotal();
+        PaginationVO vo = new PaginationVO(totalCnt,page,pageSize);
+        List<BoardDto> selectList = boardRepo.selectList(map);
         model.addAttribute("selectList",selectList);
+        model.addAttribute("vo",vo);
+
 
         return "board/list";
     }

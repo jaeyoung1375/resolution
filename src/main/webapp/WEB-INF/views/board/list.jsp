@@ -28,6 +28,24 @@
                         </c:forEach>
                         </tbody>
                     </table>
+<br>
+<div class="page_wrap">
+    <div class="page_nation">
+
+
+    <c:if test="${vo.showPrev}">
+        <a class="arrow prev" href="<c:url value='/board/list?page=${vo.beginPage-1}&pageSize=${vo.pageSize}'/>">&lt;</a>
+    </c:if>
+    <c:forEach var="i" begin="${vo.beginPage}" end="${vo.endPage}">
+        <a class="${i eq vo.page ? 'active' : ''} "
+                href="<c:url value='/board/list?page=${i}&pageSize=${vo.pageSize}'/>">${i}</a>
+
+    </c:forEach>
+    <c:if test="${vo.showNext}">
+        <a class="arrow next" href="<c:url value='/board/list?page=${vo.endPage+1}&pageSize=${vo.pageSize}'/>">&gt;</a>
+    </c:if>
+    </div>
+</div>
 
 </body>
 </html>
