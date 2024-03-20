@@ -2,7 +2,9 @@ package com.jy.board.controller;
 
 import com.jy.board.dto.BoardDto;
 import com.jy.board.repo.BoardRepo;
+import com.jy.board.service.BoardService;
 import com.jy.board.vo.PaginationVO;
+import com.jy.board.vo.SearchVO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpRequest;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +25,8 @@ public class BoardController {
 
     @Autowired
     private BoardRepo boardRepo;
+    @Autowired
+    private BoardService boardService;
 
     @GetMapping("/")
     public String main(){
@@ -27,17 +34,20 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public String selectList(Model model, @RequestParam(defaultValue = "1") Integer page,
-                             @RequestParam(defaultValue = "10") Integer pageSize){
-        Map map = new HashMap();
-        map.put("page",page);
-        map.put("pageSize", pageSize);
+    public String selectList(Model model, @ModelAttribute SearchVO search){
 
-        int totalCnt = boardRepo.getTotal();
-        PaginationVO vo = new PaginationVO(totalCnt,page,pageSize);
-        List<BoardDto> selectList = boardRepo.selectList(map);
-        model.addAttribute("selectList",selectList);
-        model.addAttribute("vo",vo);
+
+        int totalCnt = boardService.getSearchResultCnt(search);
+        model.addAttribute("totalCnt",totalCnt);
+
+        PaginationVO ph = new PaginationVO(totalCnt,search);
+
+        List<BoardDto> list = boardService.searchSelectList(search);
+        model.addAttribute("list",list);
+        model.addAttribute("ph",ph);
+
+        Instant startOfToday = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant();
+        model.addAttribute("startOfToday",startOfToday.toEpochMilli());
 
 
         return "board/list";
@@ -62,7 +72,8 @@ public class BoardController {
     }
 
     @GetMapping("/write")
-    public String writeForm(){
+    public String writeForm(Model model){
+        model.addAttribute("mode","new");
         return "/board/writeForm";
     }
     @PostMapping("/write")

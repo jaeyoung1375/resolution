@@ -27,22 +27,64 @@
 
     </select>
 
+    <sql id ="search">
+        <choose>
+            <when test='type=="T"'>
+                and title like '%' || #{keyword} || '%'
+            </when>
+            <when test='type=="W"'>
+                and writer like '%' || #{keyword} || '%'
+            </when>
+            <otherwise>
+                and (title like '%' || #{keyword} || '%'
+                or content like '%' || #{keyword} || '%')
+            </otherwise>
+        </choose>
+    </sql>
+
+
+    <select id="searchSelectList" parameterType="searchVO" resultType="boardDto">
+
+        SELECT bno, title, content, writer, cdate, view_cnt
+        FROM (
+                 SELECT rownum AS rn, bno, title, content, writer, cdate, view_cnt
+                 FROM (
+                          SELECT bno, title, content, writer, cdate, view_cnt
+                          FROM board where 1=1
+                            <include refid="search"/>
+                          ORDER BY bno desc
+                      )
+        <![CDATA[
+                 WHERE rownum <= #{page} * #{pageSize}
+             )
+        WHERE rn > (#{page} - 1) * #{pageSize}
+        ]]>
+
+    </select>
+
+    <select id="searchResultCnt" parameterType="searchVO" resultType="int">
+
+        SELECT count(*)
+        FROM  board where 1=1
+        <include refid="search"/>
+    </select>
 
 
 
 <!--    게시물 상세 조회-->
     <select id="selectOne" resultType="boardDto">
         select * from board where bno = #{bno}
+
     </select>
 <!--    게시물 단일 삭제-->
     <delete id="deleteById">
-        delete from board where bno = #{bno}
+        delete from board where 1=1 and bno = #{bno}
     </delete>
 
 <!--    게시물 작성 -->
     <insert id ="writeBoard">
         insert into board(bno, title, content, writer)
-        values(board_seq.nextval, #{title}, #{content}, #{writer})
+        values(board_seq.nextval, #{title}, #{content}, '문어')
     </insert>
 
     <!-- 조회수 증가 -->
@@ -50,8 +92,4 @@
         update board set view_cnt = view_cnt + 1 where bno = #{bno}
     </update>
 
-    <!-- 게시물 개수 조회 -->
-    <select id ="getTotal" resultType="int">
-        SELECT COUNT(*) FROM board
-    </select>
 </mapper>
