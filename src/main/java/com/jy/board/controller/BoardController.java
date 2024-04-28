@@ -6,6 +6,7 @@ import com.jy.board.service.BoardService;
 import com.jy.board.vo.PaginationVO;
 import com.jy.board.vo.SearchVO;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Slf4j
 @RequestMapping("/board")
 public class BoardController {
 
@@ -58,8 +60,10 @@ public class BoardController {
         BoardDto boardDto = boardRepo.selectOne(bno);
         boardRepo.updateViewCnt(bno);
         String userIp = request.getRemoteAddr();
+        String referer = request.getHeader("referer");
         model.addAttribute("userIp",userIp);
        model.addAttribute("boardDto",boardDto);
+
        return "board/detail";
     }
 
@@ -72,8 +76,9 @@ public class BoardController {
     }
 
     @GetMapping("/write")
-    public String writeForm(Model model){
+    public String writeForm(Model model, SearchVO search){
         model.addAttribute("mode","new");
+        model.addAttribute("search",search);
         return "/board/writeForm";
     }
     @PostMapping("/write")

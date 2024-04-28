@@ -33,8 +33,16 @@
 <%--        </c:if>--%>
 
 <%--        <label><input type="checkbox" name="rememberId" ${empty cookie.id.value ? "" : "checked"}> 아이디 기억</label>--%>
+        <div class="login_btn">
         <input type="button" class="btn" id="login_button" value="L O G I N"/>
+        </div>
+        <div class="social_wrap">
+            <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=65c16479aad3bd2432ff5b21c96824cf&redirect_uri=http://localhost/oauth
+">
+                <img src="/image/kakao_login_btn.png">
+            </a>
 
+        </div>
     </form>
 </div>
 

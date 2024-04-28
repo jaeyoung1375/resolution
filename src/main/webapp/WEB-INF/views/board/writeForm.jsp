@@ -159,8 +159,11 @@
             form.submit();
         });
 
+
+
+
         $("#listBtn").on("click", function(){
-            location.href="<c:url value='/board/list?page=${page}&pageSize=${pageSize}'/>";
+            location.href="<c:url value='/board/list${SearchVO.queryString}'/>";
         });
     });
 </script>

@@ -191,7 +191,7 @@
                 <input type="text" name="keyword" class="search-input" type="text" value="${ph.search.keyword}" placeholder="검색어를 입력해주세요">
                 <input type="submit" class="search-button" value="검색">
             </form>
-            <button id="writeBtn" class="btn-write" onclick="location.href='<c:url value="/board/write"/>'"><i class="fa fa-pencil"></i> 글쓰기</button>
+            <button id="writeBtn" class="btn-write" onclick="location.href='<c:url value="/board/write${ph.search.queryString}"/>'"><i class="fa fa-pencil"></i> 글쓰기</button>
         </div>
 
         <table>
@@ -205,7 +205,7 @@
             <c:forEach var="boardDto" items="${list}">
                 <tr>
                     <td class="no">${boardDto.bno}</td>
-                    <td class="title"><a href="<c:url value="/board/read${ph.search.queryString}&bno=${boardDto.bno}"/>">${boardDto.title}</a></td>
+                    <td class="title"><a href="<c:url value="/board/detail${ph.search.queryString}&bno=${boardDto.bno}"/>">${boardDto.title}</a></td>
                     <td class="writer">${boardDto.writer}</td>
                     <c:choose>
                         <c:when test="${boardDto.cdate.time >= startOfToday}">

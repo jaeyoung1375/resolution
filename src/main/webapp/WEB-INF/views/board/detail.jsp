@@ -11,6 +11,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="/js/member/member.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -49,31 +50,12 @@
         </form>
 
         <form id="listForm">
-            <!--
-            추후에 페이징, 검색결과를 input에 담아 구현
-            -->
+
             <button type="submit">목록</button>
         </form>
 
     </div>
 </div>
-        <script>
-           $(document).ready(function(){
-              $("#deleteForm").click(function(){
-                 if(confirm("정말 삭제하시겠습니까?")){
-                     $(this).attr("method","post");
-                     $(this).attr("action","/board/delete");
-                 }else{
-                     return false;
-                 }
 
-              }); // deleteForm end
-              $("#listForm").click(function(){
-                    $(this).attr("method","get");
-                    $(this).attr("action","/board/list");
-              }); // listForm end
-
-           });// load end
-        </script>
 </body>
 </html>
